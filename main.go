@@ -3,9 +3,20 @@ package main
 import (
 	"fmt"
 	"log"
+	"math/rand"
 	"os"
 	"strings"
 )
+
+var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+
+func randSeq(n int) string {
+	b := make([]rune, n)
+	for i := range b {
+		b[i] = letters[rand.Intn(len(letters))]
+	}
+	return string(b)
+}
 
 func genFile(name string, count int, ntype int) {
 	const maxVal = 1_000_000_000
@@ -24,6 +35,8 @@ func genFile(name string, count int, ntype int) {
 		case 0:
 			s = fmt.Sprintf("%10d", i /* rand.Intn(maxVal)*/)
 			//s = fmt.Sprintf("%8d", rand.Int63n(maxVal))
+		case 10: // слова
+			s = randSeq(4 + rand.Intn(5))
 		}
 		sb.WriteString(s)
 		if i < count-1 {
@@ -35,6 +48,6 @@ func genFile(name string, count int, ntype int) {
 
 func main() {
 	fmt.Println("io...")
-	genFile("input.txt", 1000000, 0)
+	genFile("input.txt", 1000000, 10)
 
 }
